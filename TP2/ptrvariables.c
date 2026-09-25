@@ -34,12 +34,7 @@ Cela permet d'afficher l'adresse mémoire de manière générique, sans se souci
 */
 
 
-int main(void)
-{
-	uint32_t f_bits;
-	memcpy(&f_bits, f, sizeof f_bits);
-	printf("Adresse de f : %p, Valeur de f : %08X\n", (void *)f, f_bits);
-
+int main(void){
 	printf("c_value   : adresse = %p, valeur = %08X\n", (void *)c, *c);
 	printf("s_value   : adresse = %p, valeur = %08X\n", (void *)s, *s);
 	printf("i_value   : adresse = %p, valeur = %08X\n", (void *)i, *i);

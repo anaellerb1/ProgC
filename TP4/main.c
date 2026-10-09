@@ -1,11 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "operator.h"
 #include "operator.c"
 
 #include "fichier.h"
 #include "fichier.c"
+
+struct Etudiant {
+    char nom[30];
+    char prenom[30];
+    char adresse[80];
+    float note1;
+    float note2;
+};
 
 
 void exercice41(){
@@ -49,7 +58,7 @@ void exercice42(){
             printf("Entrez le nom du fichier dans lequel vous souhaitez écrire : ");
             scanf("%99s", nom_de_fichier);
             printf("Entrez le message à écrire : ");
-            scanf(" %499[^\n]", message);
+            scanf(" %499s", message);
             ecrire_dans_fichier(nom_de_fichier, message);
         } else if (choix == 3){
             printf("Sortie....\n");
@@ -59,6 +68,41 @@ void exercice42(){
     }
 }
 
+void exercice43(){
+
+    struct Etudiant etudiants[5];
+    char ligne[200];
+    char contenu[1000] = "";
+
+    for (int i = 0; i < 5; i++){
+        printf("Entrez les détails de l'étudiant.e %d :\n", i + 1);
+
+        printf("Nom : ");
+        scanf(" %29[^\n]", etudiants[i].nom);
+
+        printf("Prénom : ");
+        scanf(" %29[^\n]", etudiants[i].prenom);
+
+        printf("Adresse : ");
+        scanf(" %79[^\n]", etudiants[i].adresse);
+
+        printf("Note 1 : ");
+        scanf("%f", &etudiants[i].note1);
+
+        printf("Note 2 : ");
+        scanf("%f", &etudiants[i].note2);
+        printf("\n");
+
+        sprintf(ligne, "%s;%s;%s;%.2f;%.2f\n",
+                etudiants[i].nom, etudiants[i].prenom, etudiants[i].adresse,
+                etudiants[i].note1, etudiants[i].note2);
+        strcat(contenu, ligne);
+    }
+
+    ecrire_dans_fichier("etudiant.txt", contenu);
+    printf("Les détails des étudiants ont été enregistrés dans le fichier etudiant.txt.\n");
+}
+
 int main(void){
 
     int choix;
@@ -66,7 +110,7 @@ int main(void){
     printf("TP4\n");
     printf("1 - Exercice 4.1\n");
     printf("2 - Exercice 4.2\n");
-    //printf("3 - Exercice 4.7\n");
+    printf("3 - Exercice 4.7\n");
     printf("Votre choix : ");
     scanf("%d", &choix);
 
@@ -74,9 +118,9 @@ int main(void){
         exercice41();
     } else if (choix == 2){
         exercice42();}
-    //else if (choix == 3){
-        //exercice47();}
-    else {printf("Choix invalide\n");}
+    else if (choix == 3){
+        exercice43();
+    } else {printf("Choix invalide\n");}
 
     return 0;
 }

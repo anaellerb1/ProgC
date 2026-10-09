@@ -1,5 +1,5 @@
-Robin;Anaëlle;113;23.00;22.00
-Michel;Thomeh;eds;10.00;11.00
-;;;0.00;0.00
-;;;0.00;0.00
-;;;0.00;974877045555200.00
+robin;anaelle;oui;10.00;11.00
+Thomeh;michel;12;9.00;8.00
+dh;lou;ze;3.00;3.00
+red;melo;92 rue;2.00;4.00
+baba;baba;ka;19.00;20.00

@@ -39,13 +39,10 @@ int main(void) {
 
 		lire_chaine("Adresse : ", etudiants[i].adresse, sizeof etudiants[i].adresse);
 
-        printf("Note 1 : ");
-        scanf("%f", &etudiants[i].note1);
+       	lire_note("Note 1 : ", &etudiants[i].note1);
 
-		printf("Note 2 : ");
-		scanf("%f", &etudiants[i].note2);
-		printf("\n");
-
+		lire_note("Note 2 : ", &etudiants[i].note2);
+        
 		/* Mise en forme de la ligne */
 		sprintf(ligne, "%s;%s;%s;%.2f;%.2f\n",
 				etudiants[i].nom, etudiants[i].prenom, etudiants[i].adresse,

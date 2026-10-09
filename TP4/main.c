@@ -8,6 +8,9 @@
 #include "fichier.h"
 #include "fichier.c"
 
+#include "liste.h"
+#include "liste.c"
+
 struct Etudiant {
     char nom[30];
     char prenom[30];
@@ -58,7 +61,7 @@ void exercice42(){
             printf("Entrez le nom du fichier dans lequel vous souhaitez écrire : ");
             scanf("%99s", nom_de_fichier);
             printf("Entrez le message à écrire : ");
-            scanf(" %499s", message);
+            scanf(" %499[^\n]", message);
             ecrire_dans_fichier(nom_de_fichier, message);
         } else if (choix == 3){
             printf("Sortie....\n");
@@ -103,6 +106,36 @@ void exercice43(){
     printf("Les détails des étudiants ont été enregistrés dans le fichier etudiant.txt.\n");
 }
 
+
+void exercice47(){
+ 
+    struct liste_couleurs ma_liste;
+    init_liste(&ma_liste);
+ 
+    /* 10 couleurs {rouge, vert, bleu, alpha} */
+    struct couleur couleurs[10] = {
+        {0xFF, 0x00, 0x00, 0xFF},   /* rouge */
+        {0x00, 0xFF, 0x00, 0xFF},   /* vert */
+        {0x00, 0x00, 0xFF, 0xFF},   /* bleu */
+        {0xFF, 0xFF, 0x00, 0xFF},   /* jaune */
+        {0x00, 0xFF, 0xFF, 0xFF},   /* cyan */
+        {0xFF, 0x00, 0xFF, 0xFF},   /* magenta */
+        {0xFF, 0xFF, 0xFF, 0xFF},   /* blanc */
+        {0x00, 0x00, 0x00, 0xFF},   /* noir */
+        {0xFF, 0xA5, 0x00, 0xFF},   /* orange */
+        {0x80, 0x80, 0x80, 0xFF}    /* gris */
+    };
+ 
+    for (int i = 0; i < 10; i++){
+        insertion(&couleurs[i], &ma_liste);
+    }
+ 
+    printf("Liste des couleurs :\n");
+    parcours(&ma_liste);
+ 
+    liberer_liste(&ma_liste);
+}
+
 int main(void){
 
     int choix;
@@ -111,6 +144,7 @@ int main(void){
     printf("1 - Exercice 4.1\n");
     printf("2 - Exercice 4.2\n");
     printf("3 - Exercice 4.7\n");
+    printf("4 - Exercice 4.7\n");
     printf("Votre choix : ");
     scanf("%d", &choix);
 
@@ -120,6 +154,8 @@ int main(void){
         exercice42();}
     else if (choix == 3){
         exercice43();
+    } else if (choix == 4){
+        exercice47();
     } else {printf("Choix invalide\n");}
 
     return 0;

@@ -27,19 +27,20 @@ void exercice41(){
 }
 
 void exercice42(){
- 
+
     int choix = 0;
     char nom_de_fichier[100];
     char message[500];
- 
-    while (choix == 1 && choix == 2){
- 
+
+    while (choix != 3){
+
         printf("\nQue souhaitez-vous faire ?\n");
         printf("1. Lire un fichier\n");
         printf("2. Écrire dans un fichier\n");
+        printf("3. Quitter\n");
         printf("Votre choix : ");
         scanf("%d", &choix);
- 
+
         if (choix == 1){
             printf("Entrez le nom du fichier à lire : ");
             scanf("%99s", nom_de_fichier);
@@ -48,10 +49,12 @@ void exercice42(){
             printf("Entrez le nom du fichier dans lequel vous souhaitez écrire : ");
             scanf("%99s", nom_de_fichier);
             printf("Entrez le message à écrire : ");
-            scanf("%499s", message);
+            scanf(" %499[^\n]", message);
             ecrire_dans_fichier(nom_de_fichier, message);
-        } else {
+        } else if (choix == 3){
             printf("Sortie....\n");
+        } else {
+            printf("Choix invalide\n");
         }
     }
 }

@@ -1,9 +1,5 @@
-/*
- * Fichier : operator.c
- * Auteur : Anaëlle
-*/
-
 #include "operator.h"
+#include <stdio.h>
 
 int somme(int num1, int num2){
     return num1 + num2;
@@ -33,8 +29,9 @@ int ou(int num1, int num2){
     return num1 | num2;
 }
 
-int negation(int num1, int num2, char op){
-    return ~num1;
+int negation(int num1, int num2){
+    num2 = 0; 
+    return ~num1 + num2;
 }
 
 // choisit la bonne fonction selon l'opérateur op
@@ -73,7 +70,7 @@ int calcul(int num1, int num2, char op){
             resultat = ou(num1, num2);
             break;
         case '~':
-            resultat = negation(num1, num2, op);
+            resultat = negation(num1, num2);
             break;
         default:
             printf("Opérateur inconnu\n");

@@ -33,7 +33,7 @@ int ou(int num1, int num2){
     return num1 | num2;
 }
 
-int negation(int num1, int num2){
+int negation(int num1, int num2, char op){
     return ~num1;
 }
 
@@ -73,7 +73,7 @@ int calcul(int num1, int num2, char op){
             resultat = ou(num1, num2);
             break;
         case '~':
-            resultat = negation(num1, num2);
+            resultat = negation(num1, num2, op);
             break;
         default:
             printf("Opérateur inconnu\n");

@@ -19,4 +19,10 @@
  */
 int envoie_recois_message(int socketfd);
 
+/*
+ * Envoi d'une demande de calcul : "calcule : <op> <nombre1> <nombre2>"
+ * Il faut : l'identifiant de la socket, l'opérateur et les deux nombres
+ */
+int envoie_operateur_numeros(int socketfd, char op, double a, double b);
+
 #endif

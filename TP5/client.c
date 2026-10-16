@@ -16,6 +16,43 @@
 #include "client.h"
 
 /**
+ * Envoie une demande de calcul au serveur au format
+ * "calcule : <op> <nombre1> <nombre2>", puis affiche la réponse.
+ * @param socketfd Le descripteur de la socket.
+ * @param op L'opérateur (+, -, *, /).
+ * @param a Le premier nombre.
+ * @param b Le deuxième nombre.
+ * @return 0 en cas de succès, -1 en cas d'erreur.
+ */
+int envoie_operateur_numeros(int socketfd, char op, double a, double b)
+{
+  char data[1024];
+
+  // Construire le message : "calcule : + 23 45"
+  snprintf(data, sizeof(data), "calcule : %c %g %g", op, a, b);
+
+  // Envoyer le message au serveur
+  int write_status = write(socketfd, data, strlen(data));
+  if (write_status < 0)
+  {
+    perror("Erreur d'écriture");
+    return -1;
+  }
+
+  // Lire la réponse du serveur (on garde une case pour le '\0')
+  memset(data, 0, sizeof(data));
+  int read_status = read(socketfd, data, sizeof(data) - 1);
+  if (read_status < 0)
+  {
+    perror("Erreur de lecture");
+    return -1;
+  }
+
+  printf("Message reçu: %s\n", data);
+  return 0;
+}
+
+/**
  * Fonction pour envoyer et recevoir un message depuis un client connecté à la socket.
  *
  * @param socketfd Le descripteur de la socket utilisée pour la communication.
@@ -33,9 +70,28 @@ int envoie_recois_message(int socketfd)
   printf("Votre message (max 1000 caractères): ");
   fgets(message, sizeof(message), stdin);
 
-  // Construit le message avec une étiquette "message: "
-  strcpy(data, "message: ");
-  strcat(data, message);
+  // Demande de calcul : l'utilisateur a tapé "calcule : <op> <nombre1> <nombre2>"
+  if (strncmp(message, "calcule", 7) == 0)
+  {
+    char op;
+    double a, b;
+    char reste;
+
+    // Format correct (exactement 3 valeurs) : on passe par envoie_operateur_numeros
+    if (sscanf(message, "calcule : %c %lf %lf %c", &op, &a, &b, &reste) == 3)
+    {
+      return envoie_operateur_numeros(socketfd, op, a, b);
+    }
+
+    // Format incorrect : on envoie le texte tel quel, le serveur répondra par une erreur
+    strcpy(data, message);
+  }
+  else
+  {
+    // Construit le message avec une étiquette "message: "
+    strcpy(data, "message: ");
+    strcat(data, message);
+  }
 
   // Envoie le message au client
   int write_status = write(socketfd, data, strlen(data));

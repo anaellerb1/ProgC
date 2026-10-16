@@ -143,7 +143,7 @@ int main(void){
     printf("TP4\n");
     printf("1 - Exercice 4.1\n");
     printf("2 - Exercice 4.2\n");
-    printf("3 - Exercice 4.7\n");
+    printf("3 - Exercice 4.3\n");
     printf("4 - Exercice 4.7\n");
     printf("Votre choix : ");
     scanf("%d", &choix);

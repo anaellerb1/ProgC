@@ -41,6 +41,68 @@ int renvoie_message(int client_socket_fd, char *data)
 }
 
 /**
+ * Lit un message de calcul au format "calcule : <op> <nombre1> <nombre2>",
+ * effectue le calcul et renvoie le résultat au client.
+ * @param client_socket_fd : Le descripteur de socket du client.
+ * @param data : Le message reçu.
+ * @return EXIT_SUCCESS en cas de succès, EXIT_FAILURE en cas d'erreur.
+ */
+int recois_numeros_calcule(int client_socket_fd, char *data)
+{
+  char op;      // l'opérateur : + - * /
+  double a, b;  // les deux nombres
+
+  char reste;   // sert à détecter une valeur en trop
+
+  // Extraire l'opérateur, les deux nombres... et un éventuel 4e élément
+  int n = sscanf(data, "calcule : %c %lf %lf %c", &op, &a, &b, &reste);
+
+  if (n == 4)
+  {
+    return renvoie_message(client_socket_fd, "erreur : trop de valeurs");
+  }
+  if (n < 3)
+  {
+    return renvoie_message(client_socket_fd,
+                           "erreur : format attendu \"calcule : <op> <nombre1> <nombre2>\"");
+  }
+
+    double resultat;
+
+  // Choisir l'opération selon l'opérateur reçu
+  switch (op){
+    case '+':
+        resultat = a + b;
+        break;
+    case '-':
+        resultat = a - b;
+        break;
+    case '*':
+        resultat = a * b;
+        break;
+    case '/':
+        if (b == 0)
+        {
+        return renvoie_message(client_socket_fd, "erreur : division par zéro");
+        }
+        resultat = a / b;
+        break;
+    default:
+        return renvoie_message(client_socket_fd, "erreur : opérateur inconnu");
+  }
+
+  // Transformer le résultat en texte : "calcule : <resultat>"
+  char reponse[100];
+  snprintf(reponse, sizeof(reponse), "calcule : %g", resultat);
+
+  printf("Résultat envoyé: %s\n", reponse);   // trace côté serveur
+
+  // Envoyer la réponse au client
+  return renvoie_message(client_socket_fd, reponse);
+}
+
+
+/**
  * Cette fonction lit les données envoyées par le client,
  * et renvoie un message en réponse.
  * @param socketfd : Le descripteur de socket du serveur.
@@ -53,6 +115,12 @@ int recois_envoie_message(int client_socket_fd, char *data)
   char code[10];
   if (sscanf(data, "%9s:", code) == 1) // Assurez-vous que le format est correct
   {
+    // Message de calcul : "calcule : <op> <nombre1> <nombre2>"
+    if (strcmp(code, "calcule") == 0 || strcmp(code, "calcule:") == 0)
+    {
+      return recois_numeros_calcule(client_socket_fd, data);
+    }
+
     if (strcmp(code, "message:") == 0)
     {
       char reponse[1024];
@@ -68,8 +136,7 @@ int recois_envoie_message(int client_socket_fd, char *data)
       return renvoie_message(client_socket_fd, reponse);
     }
   }
-
-  return (EXIT_SUCCESS);
+  return renvoie_message(client_socket_fd, "erreur : code inconnu");
 }
 
 /**
